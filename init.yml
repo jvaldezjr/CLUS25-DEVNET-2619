@@ -23,3 +23,29 @@
       networks_info:
         organizationId: "{{ test_org_id }}"
       register: org_networks
+
+    - name: Show networks in the organization
+      debug:
+        var: org_networks
+
+    - name: Get network firmware versions
+      networks_firmware_upgrades_info:
+        networkId: "{{ item.id }}"
+      loop: "{{ org_networks.meraki_response }}"
+      register: network_firmware_versions
+
+    - name: Build firmware_by_network map (skip bad calls)
+      set_fact:
+        firmware_by_network: >-
+          {{ dict(
+               network_firmware_versions.results
+                 | map(attribute='item.id')
+                 | zip(
+                     network_firmware_versions.results
+                       | map(attribute='meraki_response')
+                   )
+             ) }}
+
+    - name: Show network firmware versions
+      debug:
+        var: firmware_by_network
