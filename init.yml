@@ -1,18 +1,17 @@
 ---
 - name: Gather Meraki Organizations
   hosts: meraki_servers
-  gather_facts: no
-  collections:
-    - cisco.meraki
+  gather_facts: false
+
   vars:
     test_org_id: "{{ lookup('env','MERAKI_ORG_ID') }}"
   tasks:
     - name: Return identity of current API user
-      administered_identities_me_info:
+      cisco.meraki.administered_identities_me_info:
       register: current_user
 
     - name: Gather Meraki Organizations
-      organizations_info:
+      cisco.meraki.organizations_info:
       register: org_response
 
     - name: Store just the list of organizations
@@ -20,7 +19,7 @@
         organizations: "{{ org_response.meraki_response }}"
 
     - name: Get networks in the organization
-      networks_info:
+      cisco.meraki.networks_info:
         organizationId: "{{ test_org_id }}"
       register: org_networks
 
@@ -29,7 +28,7 @@
         var: org_networks
 
     - name: Get network firmware versions
-      networks_firmware_upgrades_info:
+      cisco.meraki.networks_firmware_upgrades_info:
         networkId: "{{ item.id }}"
       loop: "{{ org_networks.meraki_response }}"
       register: network_firmware_versions
