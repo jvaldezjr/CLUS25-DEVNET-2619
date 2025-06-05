@@ -5,3 +5,11 @@
   collections:
     - cisco.meraki
 
+  tasks:
+    - name: Return identity of current API user
+      administered_identities_me_info:
+      register: current_user
+
+    - name: Show retrieved user
+      debug:
+        var: current_user
