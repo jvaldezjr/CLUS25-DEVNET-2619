@@ -15,7 +15,7 @@
       register: org_response
 
     - name: Store just the list of organizations
-      set_fact:
+      ansible.builtin.set_fact:
         organizations: "{{ org_response.meraki_response }}"
 
     - name: Get networks in the organization
@@ -24,7 +24,7 @@
       register: org_networks
 
     - name: Show networks in the organization
-      debug:
+      ansible.builtin.debug:
         var: org_networks
 
     - name: Get network firmware versions
@@ -34,7 +34,7 @@
       register: network_firmware_versions
 
     - name: Build firmware_by_network map (skip bad calls)
-      set_fact:
+      ansible.builtin.set_fact:
         firmware_by_network: >-
           {{ dict(
                network_firmware_versions.results
@@ -46,5 +46,5 @@
              ) }}
 
     - name: Show network firmware versions
-      debug:
+      ansible.builtin.debug:
         var: firmware_by_network
