@@ -25,3 +25,13 @@
     - name: Show retrieved organizations
       debug:
         var: organizations
+
+    - name: Get organization available upgrades
+      organizations_firmware_upgrades_info:
+        organizationId: "{{ item.id }}"
+      loop: "{{ organizations }}"
+      register: org_upgrades
+
+    - name: Show retrieved organization upgrades
+      debug:
+        var: org_upgrades.results
