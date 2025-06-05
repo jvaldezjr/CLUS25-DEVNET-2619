@@ -4,7 +4,8 @@
   gather_facts: no
   collections:
     - cisco.meraki
-
+  vars:
+    test_org_id: "{{ lookup('env','MERAKI_ORG_ID') }}"
   tasks:
     - name: Return identity of current API user
       administered_identities_me_info:
@@ -26,12 +27,7 @@
       debug:
         var: organizations
 
-    - name: Get organization available upgrades
-      organizations_firmware_upgrades_info:
-        organizationId: "{{ item.id }}"
-      loop: "{{ organizations }}"
-      register: org_upgrades
-
-    - name: Show retrieved organization upgrades
-      debug:
-        var: org_upgrades.results
+    - name: Get networks in the organization
+      networks_info:
+        organizationId: "{{ test_org_id }}"
+      register: org_networks
