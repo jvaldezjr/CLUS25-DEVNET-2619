@@ -11,10 +11,6 @@
       administered_identities_me_info:
       register: current_user
 
-    - name: Show retrieved user
-      debug:
-        var: current_user
-
     - name: Gather Meraki Organizations
       organizations_info:
       register: org_response
@@ -22,10 +18,6 @@
     - name: Store just the list of organizations
       set_fact:
         organizations: "{{ org_response.meraki_response }}"
-
-    - name: Show retrieved organizations
-      debug:
-        var: organizations
 
     - name: Get networks in the organization
       networks_info:
