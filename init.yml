@@ -1,0 +1,7 @@
+---
+- name: Gather Meraki Organizations
+  hosts: meraki_servers
+  gather_facts: no
+  collections:
+    - cisco.meraki
+
