@@ -1,5 +1,5 @@
 ---
-- name: Gather Meraki Organizations
+- name: Organization firmware upgrade
   hosts: meraki_servers
   gather_facts: false
 
