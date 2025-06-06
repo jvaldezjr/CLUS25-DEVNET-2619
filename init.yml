@@ -23,9 +23,10 @@
         organizationId: "{{ test_org_id }}"
       register: org_networks
 
-    - name: Show networks in the organization
-      ansible.builtin.debug:
-        var: org_networks
+    - name: Set networkId fact for testing
+      # This is just for testing purposes, to avoid looping through all networks
+      ansible.builtin.set_fact:
+        networkId: "{{ org_networks.meraki_response[1].id }}"
 
     - name: Get network firmware versions
       cisco.meraki.networks_firmware_upgrades_info:
