@@ -50,19 +50,3 @@
       cisco.meraki.networks_firmware_upgrades_info:
         networkId: "{{ test_network_id }}"
       register: network_firmware_versions
-
-    - name: Build firmware_by_network map (skip bad calls)
-      ansible.builtin.set_fact:
-        firmware_by_network: >-
-          {{ dict(
-               network_firmware_versions.results
-                 | map(attribute='item.id')
-                 | zip(
-                     network_firmware_versions.results
-                       | map(attribute='meraki_response')
-                   )
-             ) }}
-
-    - name: Show network firmware versions
-      ansible.builtin.debug:
-        var: firmware_by_network
