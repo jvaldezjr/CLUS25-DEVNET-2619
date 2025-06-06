@@ -30,7 +30,7 @@
 
     - name: Get network firmware versions
       cisco.meraki.networks_firmware_upgrades_info:
-        networkId: test_network_id
+        networkId: "{{ test_network_id }}"
       register: network_firmware_versions
 
     - name: Build firmware_by_network map (skip bad calls)
