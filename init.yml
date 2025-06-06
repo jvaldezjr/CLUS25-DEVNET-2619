@@ -34,6 +34,18 @@
       loop: "{{ org_networks.meraki_response }}"
       register: org_network_firmware_versions
 
+    - name: Build dictionary of firmware versions by network
+      ansible.builtin.set_fact:
+        firmware_by_network: >-
+          {{ dict(
+               org_network_firmware_versions.results
+                 | map(attribute='item.id')
+                 | zip(
+                     org_network_firmware_versions.results
+                       | map(attribute='meraki_response')
+                   )
+             ) }}
+
     - name: Get network firmware versions
       cisco.meraki.networks_firmware_upgrades_info:
         networkId: "{{ test_network_id }}"
