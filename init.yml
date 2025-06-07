@@ -50,3 +50,10 @@
       cisco.meraki.networks_firmware_upgrades_info:
         networkId: "{{ test_network_id }}"
       register: network_firmware_versions
+
+    - name: Create test_network_current_version dictionary with shortName and releaseType
+      ansible.builtin.set_fact:
+        test_network_current_version: >-
+          "{{ firmware_by_network.L_655836695735845620.products.wireless.currentVersion.shortName }}" :
+          "{{ firmware_by_network.L_655836695735845620.products.wireless.currentVersion.releaseType }}"
+
