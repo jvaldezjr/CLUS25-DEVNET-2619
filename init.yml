@@ -118,4 +118,3 @@
     #         ])
     #       }}
     #   when: available_upgrades | length > 0
-
