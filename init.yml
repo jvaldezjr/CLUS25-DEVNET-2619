@@ -4,7 +4,7 @@
   gather_facts: false
 
   vars:
-    test_org_id: "{{ lookup('env','MERAKI_ORG_ID') }}"
+    test_org_id: "{{ lookup('env','MERAKI_ORG_ID') }}" # Set this to your test organization ID
     test_product: "wireless"  # Change this to the product you want to test
 
   tasks:
