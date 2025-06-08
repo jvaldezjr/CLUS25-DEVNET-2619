@@ -65,6 +65,3 @@
              | selectattr('releaseType', 'in', ['beta', 'candidate', 'stable'])
              | list }}
 
-    - name: Create test_network_available_versions dictionary with shortName key and releaseType value
-      ansible.builtin.set_fact:
-        test_network_available_versions: "{{ dict(available_versions_short_names | zip(available_versions_release_types)) }}"
