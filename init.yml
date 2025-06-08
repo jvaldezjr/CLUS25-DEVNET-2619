@@ -82,3 +82,22 @@
     - name: Debug the available upgrades for test_network_id
       ansible.builtin.debug:
         msg: "{{ available_upgrades }}"
+
+    - name: Schedule firmware upgrade for test_network_id
+      cisco.meraki.networks_firmware_upgrades:
+        networkId: "{{ test_network_id }}"
+        products: >-
+          {{
+            dict([
+              (test_product, {
+                'nextUpgrade': {
+                  'time': test_upgrade_time,
+                  'toVersion': {
+                    'id': available_upgrades[0].id
+                  }
+                }
+              })
+            ])
+          }}
+      when: available_upgrades | length > 0
+
