@@ -80,4 +80,3 @@
     - name: Debug the available upgrades for test_network_id
       ansible.builtin.debug:
         msg: "{{ available_upgrades }}"
-
