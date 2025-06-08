@@ -6,6 +6,7 @@
   vars:
     test_org_id: "{{ lookup('env','MERAKI_ORG_ID') }}" # Set this to your test organization ID
     test_product: "wireless"  # Change this to the product you want to test
+    test_network_type: "production"  # Change this to the network type you want to test [production, test]
 
   tasks:
     - name: Load version policies from file
@@ -68,9 +69,9 @@
         available_upgrades: >-
           {{ firmware_by_network[test_network_id].products[test_product].availableVersions
              | selectattr('releaseType', 'in', ['beta', 'candidate', 'stable']
-                if version_policies[test_product].test == 'beta'
+                if version_policies[test_product][test_network_type] == 'beta'
                 else (['candidate', 'stable']
-                  if version_policies[test_product].test == 'candidate'
+                  if version_policies[test_product][test_network_type] == 'candidate'
                 else ['stable']
                 )
              )
