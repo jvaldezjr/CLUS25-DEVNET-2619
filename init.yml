@@ -55,7 +55,6 @@
       ansible.builtin.set_fact:
         available_upgrades: >-
           {{ firmware_by_network[test_network_id].products.wireless.availableVersions
-             | selectattr('shortName', '>', firmware_by_network.L_655836695735845620.products.wireless.currentVersion.shortName)
-             | selectattr('releaseType', 'in', ['beta', 'candidate', 'stable'])
+             | selectattr('shortName', 'version_compare', firmware_by_network[test_network_id].products.wireless.currentVersion.shortName, '>')
              | list }}
 
