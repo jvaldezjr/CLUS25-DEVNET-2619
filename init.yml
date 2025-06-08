@@ -62,10 +62,18 @@
       ansible.builtin.debug:
         msg: "{{ firmware_by_network[test_network_id].products[test_product].currentVersion }}"
 
-    - name: Store available upgrades in a list where version is greater than current and releaseType is stable or candidate
+    - name: Store available upgrades in a list where version is > current and releaseType matches the test policy
+      # Use version_compare to select versions > the current version and >= releaseType in version_policies
       ansible.builtin.set_fact:
         available_upgrades: >-
           {{ firmware_by_network[test_network_id].products[test_product].availableVersions
+             | selectattr('releaseType', 'in', ['beta', 'candidate', 'stable']
+                if version_policies[test_product].test == 'beta'
+                else (['candidate', 'stable']
+                  if version_policies[test_product].test == 'candidate'
+                else ['stable']
+                )
+             )
              | selectattr('shortName', 'version_compare', firmware_by_network[test_network_id].products[test_product].currentVersion.shortName, '>')
              | list }}
 
