@@ -6,7 +6,13 @@
   vars:
     test_org_id: "{{ lookup('env','MERAKI_ORG_ID') }}"
     test_product: "wireless"  # Change this to the product you want to test
+
   tasks:
+    - name: Load version policies from file
+      ansible.builtin.include_vars:
+        file: version_policies.yml
+        name: version_policies
+
     # - name: Return identity of current API user
     #   cisco.meraki.administered_identities_me_info:
     #   register: current_user
@@ -52,9 +58,9 @@
         networkId: "{{ test_network_id }}"
       register: network_firmware_versions
 
-    # - name: Debug the network test_network_id current version
-    #   ansible.builtin.debug:
-    #     msg: "{{ firmware_by_network[test_network_id].products[test_product].currentVersion }}"
+    - name: Debug the network test_network_id current version
+      ansible.builtin.debug:
+        msg: "{{ firmware_by_network[test_network_id].products[test_product].currentVersion }}"
 
     - name: Store available upgrades in a list where version is greater than current and releaseType is stable or candidate
       ansible.builtin.set_fact:
@@ -63,6 +69,7 @@
              | selectattr('shortName', 'version_compare', firmware_by_network[test_network_id].products[test_product].currentVersion.shortName, '>')
              | list }}
 
-    # - name: Debug the available upgrades for test_network_id
-    #   ansible.builtin.debug:
-    #     msg: "{{ available_upgrades }}"
+    - name: Debug the available upgrades for test_network_id
+      ansible.builtin.debug:
+        msg: "{{ available_upgrades }}"
+
