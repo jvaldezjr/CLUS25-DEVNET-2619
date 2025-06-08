@@ -1,0 +1,22 @@
+---
+appliance:
+  production: stable
+  test: candidate
+camera:
+  production: beta
+  test: beta
+cellularGateway:
+  production: candidate
+  test: beta
+sensor:
+  production: beta
+  test: beta
+switch:
+  production: candidate
+  test: beta
+wireless:
+  production: candidate
+  test: beta
+wirelessController:
+  production: stable
+  test: candidate
