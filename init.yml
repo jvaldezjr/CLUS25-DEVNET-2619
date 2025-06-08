@@ -51,6 +51,10 @@
         networkId: "{{ test_network_id }}"
       register: network_firmware_versions
 
+    # - name: Debug the network test_network_id current version
+    #   ansible.builtin.debug:
+    #     msg: "{{ firmware_by_network[test_network_id].products.wireless.currentVersion }}"
+
     - name: Store available upgrades in a list where version is greater than current and releaseType is stable or candidate
       ansible.builtin.set_fact:
         available_upgrades: >-
@@ -58,3 +62,6 @@
              | selectattr('shortName', 'version_compare', firmware_by_network[test_network_id].products.wireless.currentVersion.shortName, '>')
              | list }}
 
+    # - name: Debug the available upgrades for test_network_id
+    #   ansible.builtin.debug:
+    #     msg: "{{ available_upgrades }}"
