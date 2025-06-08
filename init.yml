@@ -101,3 +101,21 @@
           }}
       when: available_upgrades | length > 0
 
+    # - name: Cancel firmware upgrade for test_network_id
+    #   cisco.meraki.networks_firmware_upgrades:
+    #     networkId: "{{ test_network_id }}"
+    #     products: >-
+    #       {{
+    #         dict([
+    #           (test_product, {
+    #             'nextUpgrade': {
+    #               'time': test_upgrade_time,
+    #               'toVersion': {
+    #                 'id': network_firmware_versions.meraki_response.products[test_product].currentVersion.id
+    #               }
+    #             }
+    #           })
+    #         ])
+    #       }}
+    #   when: available_upgrades | length > 0
+
