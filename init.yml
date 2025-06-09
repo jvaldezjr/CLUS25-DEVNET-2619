@@ -8,6 +8,8 @@
     test_product: "wireless"  # Change this to the product you want to test
     test_network_type: "production"  # Change this to the network type you want to test [production, test]
     test_upgrade_time: "2025-07-07T03:00:00"  # Set this to the desired local time upgrade
+    freshdesk_api_key: "{{ lookup('env', 'FRESHDESK_API_KEY') }}"
+    freshdesk_domain: "{{ lookup('env', 'FRESHDESK_DOMAIN') }}" # Set this to your Freshdesk domain via env variable
 
   tasks:
     - name: Load version policies from file
@@ -101,20 +103,22 @@
           }}
       when: available_upgrades | length > 0
 
-    # - name: Cancel firmware upgrade for test_network_id
-    #   cisco.meraki.networks_firmware_upgrades:
-    #     networkId: "{{ test_network_id }}"
-    #     products: >-
-    #       {{
-    #         dict([
-    #           (test_product, {
-    #             'nextUpgrade': {
-    #               'time': test_upgrade_time,
-    #               'toVersion': {
-    #                 'id': network_firmware_versions.meraki_response.products[test_product].currentVersion.id
-    #               }
-    #             }
-    #           })
-    #         ])
-    #       }}
-    #   when: available_upgrades | length > 0
+    - name: Create Freshdesk Ticket
+      ansible.builtin.uri:
+        url: "https://{{ freshdesk_domain }}/api/v2/tickets"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Basic {{ freshdesk_api_key | b64encode }}"
+        body_format: json
+        body:
+          description: >
+            A new firmware upgrade has been scheduled for testing in the organization
+            {{ test_org_id }}. The upgrade is set for {{ test_upgrade_time }}.
+          subject: "New Firmware Upgrade Scheduled For Testing"
+          email: "jose.valdez@meraki.net"  # Replace with your email address
+          priority: 3  # 1: Low, 2: Normal, 3: High, 4: Urgent
+          status: 2      # 2: Open, 3: Pending, 4: Resolved, 5: Closed
+        status_code: 201
+      register: freshdesk_ticket_result
+
