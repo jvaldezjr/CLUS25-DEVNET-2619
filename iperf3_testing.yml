@@ -3,6 +3,15 @@
   become: true
   gather_facts: true
 
+  vars:
+    pi_interfaces:
+      pi4:
+        wired: 10.20.100.94
+        wireless: 10.20.200.142
+      pi5:
+        wired: 10.20.100.91
+        wireless: 10.20.200.240
+
   tasks:
     - name: Ensure iperf3 is installed
       ansible.builtin.package:
