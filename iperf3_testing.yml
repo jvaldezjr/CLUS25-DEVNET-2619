@@ -1,0 +1,10 @@
+- name: Ensure iperf3 is installed on all Raspberry Pi devices
+  hosts: raspberry_pi
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Ensure iperf3 is installed
+      ansible.builtin.package:
+        name: iperf3
+        state: present
