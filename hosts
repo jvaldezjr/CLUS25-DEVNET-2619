@@ -1,2 +1,6 @@
 [meraki_servers]
 meraki_server
+
+[raspberry_pi]
+pi4 ansible_host=10.20.100.91
+pi5 ansible_host=10.20.100.94
