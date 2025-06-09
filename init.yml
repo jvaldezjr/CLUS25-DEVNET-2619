@@ -1,6 +1,6 @@
 ---
 - name: Organization firmware upgrade
-  hosts: meraki_servers
+  hosts: localhost
   gather_facts: false
 
   vars:
