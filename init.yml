@@ -125,20 +125,9 @@
           }}
       when: available_upgrades | length > 0
 
-    - name: Create Freshdesk Ticket
-      ansible.builtin.uri:
-        url: "https://{{ freshdesk_domain }}/api/v2/tickets"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-          Authorization: "Basic {{ freshdesk_api_key | b64encode }}"
-        body_format: json
-        body:
-          description: >
-            A new firmware upgrade has been scheduled for testing in the organization
-            {{ test_org_id }}. The upgrade is set for {{ test_upgrade_time }}.
-          subject: "New Firmware Upgrade Scheduled For Testing"
-          email: "jose.valdez@meraki.net"  # Replace with your email address
-          priority: 3  # 1: Low, 2: Normal, 3: High, 4: Urgent
-          status: 2      # 2: Open, 3: Pending, 4: Resolved, 5: Closed
-        status_code: 201
+    - name: Download Meraki Community RSS feed
+      ansible.builtin.get_url:
+        url: "https://community.meraki.com/yuzje69629/rss/board?board.id=firmwareupgrades"
+        dest: "/tmp/meraki_firmwareupgrades.xml"
+        mode: '0644'
+
