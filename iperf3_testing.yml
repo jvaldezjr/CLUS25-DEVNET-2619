@@ -40,3 +40,11 @@
   register: iperf3_wired_to_wired_result
   changed_when: false
 
+- name: Cleanup iperf3 server after test
+  delegate_to: pi5
+  become: true
+  shell: |
+    pkill -f "iperf3"
+  ignore_errors: true
+  failed_when: false
+
