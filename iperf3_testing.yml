@@ -34,3 +34,9 @@
   delegate_to: pi5
 
 - name: Run iperf3 client (wired -> wired)
+  delegate_to: pi4
+  ansible.builtin.shell: >
+    iperf3 -c {{ iperf3_tests[0].server_bind }} -B {{ iperf3_tests[0].client_bind }} -t 15 -P 8 --json
+  register: iperf3_wired_to_wired_result
+  changed_when: false
+
