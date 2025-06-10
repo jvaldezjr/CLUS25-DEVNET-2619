@@ -131,3 +131,17 @@
         dest: "/tmp/meraki_firmwareupgrades.xml"
         mode: '0644'
 
+    - name: Parse RSS item descriptions
+      community.general.xml:
+        path: "/tmp/meraki_firmwareupgrades.xml"
+        xpath: "//item/description"
+        content: text
+      register: rss_descriptions
+
+    - name: Parse RSS item links
+      community.general.xml:
+        path: "/tmp/meraki_firmwareupgrades.xml"
+        xpath: "//item/link"
+        content: text
+      register: rss_links
+
