@@ -157,3 +157,24 @@
       set_fact:
         rss_items_dict: "{{ dict(rss_description_strings | zip(rss_link_strings)) }}"
 
+    - name: Find matching RSS link in rss_items_dict
+      set_fact:
+        matching_rss_link: >-
+          {{
+            (rss_items_dict | dict2items
+              | selectattr('key', 'search', available_upgrades[0].shortName | regex_escape)
+              | list
+              | first
+            ).value
+            if (
+              rss_items_dict | dict2items
+              | selectattr('key', 'search', available_upgrades[0].shortName | regex_escape)
+              | list
+              | length > 0
+            )
+            else ''
+          }}
+
+    - name: Debug matching RSS link
+      ansible.builtin.debug:
+        msg: "Matching RSS Link: {{ matching_rss_link }}"
