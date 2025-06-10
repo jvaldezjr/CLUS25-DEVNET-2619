@@ -1,5 +1,9 @@
 # CLUS25-DEVNET-2619
 
+This Ansible playbook check's a test organization and network for available firmware upgrades, compares those available versions against a defined policy for that product type and then schedules a designated test network for upgrade. It also runs pre-upgrade throughput tests and documents the results in a ticket that was created to track the firmware upgrade.
+
+This is a small-scale example of firmware automation possible using the Meraki Ansible colletcion, but this can be extended to any number of networks or organizations.
+
 # Getting Started
 
 The playbook uses several environment variables, as well as some static variables used for development and testing.
