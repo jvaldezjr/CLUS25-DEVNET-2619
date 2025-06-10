@@ -195,6 +195,25 @@
     - name: Debug matching RSS link
       ansible.builtin.debug:
         msg: "Matching RSS Link: {{ matching_rss_link }}"
+
+    - name: Create Freshdesk Ticket
+      ansible.builtin.uri:
+        url: "https://{{ freshdesk_domain }}/api/v2/tickets"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Basic {{ freshdesk_api_key | b64encode }}"
+        body_format: json
+        body:
+          description: >
+            A new firmware upgrade has been scheduled for testing in the organization
+            {{ test_org_id }}. The upgrade is set for {{ test_upgrade_time }}.
+            {{ available_upgrades[0].shortName }} changelog: {{ matching_rss_link }}
+          subject: "New Firmware Upgrade Scheduled For Testing"
+          email: "jose.valdez@meraki.net"  # Replace with your email address
+          priority: 3  # 1: Low, 2: Normal, 3: High, 4: Urgent
+          status: 2      # 2: Open, 3: Pending, 4: Resolved, 5: Closed
+        status_code: 201
       register: freshdesk_ticket
 
     - name: Include iperf3 testing tasks
