@@ -145,3 +145,15 @@
         content: text
       register: rss_links
 
+    - name: Extract description strings from matches
+      set_fact:
+        rss_description_strings: "{{ rss_descriptions.matches | map(attribute='description') | list }}"
+
+    - name: Extract link strings from matches
+      set_fact:
+        rss_link_strings: "{{ rss_links.matches | map(attribute='link') | list }}"
+
+    - name: Zip descriptions and links into a dictionary
+      set_fact:
+        rss_items_dict: "{{ dict(rss_description_strings | zip(rss_link_strings)) }}"
+
