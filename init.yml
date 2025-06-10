@@ -160,5 +160,6 @@
           status: 2      # 2: Open, 3: Pending, 4: Resolved, 5: Closed
         status_code: 201
 
-    - name: Include iperf3 testing playbook
-      import_playbook: iperf3_testing.yml
+    - name: Include iperf3 testing tasks
+      ansible.builtin.include_tasks: iperf3_testing.yml
+
