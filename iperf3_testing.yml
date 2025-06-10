@@ -26,3 +26,11 @@
   ansible.builtin.shell: >
     iperf3 -s -B {{ iperf3_tests[0].server_bind }} --one-off --json > /tmp/iperf3_server_wired_to_wired.json
 
+- name: Wait for iperf3 server to be ready
+  ansible.builtin.wait_for:
+    host: "{{ server_bind }}"
+    port: 5201
+    timeout: 10
+  delegate_to: pi5
+
+- name: Run iperf3 client (wired -> wired)
