@@ -1,22 +1,7 @@
-- name: Ensure iperf3 is installed on all Raspberry Pi devices
-  hosts: raspberry_pi
-  become: true
-  gather_facts: true
-
-  vars:
-    pi_interfaces:
-      pi4:
-        wired: 10.20.100.94
-        wireless: 10.20.200.142
-      pi5:
-        wired: 10.20.100.91
-        wireless: 10.20.200.240
-
-  tasks:
-    - name: Ensure iperf3 is installed
-      ansible.builtin.package:
-        name: iperf3
-        state: present
+- name: Ensure iperf3 is installed
+  ansible.builtin.package:
+    name: iperf3
+    state: present
 
 - name: Start iperf3 server on pi5 (wired, async)
   delegate_to: pi5
@@ -48,3 +33,6 @@
   ignore_errors: true
   failed_when: false
 
+- name: Set fact for iperf3 wired to wired result (for use in init.yml)
+  set_fact:
+    iperf3_wired_to_wired_output: "{{ iperf3_wired_to_wired_result.stdout | from_json }}"
