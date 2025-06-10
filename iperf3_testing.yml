@@ -17,3 +17,12 @@
       ansible.builtin.package:
         name: iperf3
         state: present
+
+- name: Start iperf3 server on pi5 (wired, async)
+  delegate_to: pi5
+  become: true
+  async: 40
+  poll: 0
+  ansible.builtin.shell: >
+    iperf3 -s -B {{ iperf3_tests[0].server_bind }} --one-off --json > /tmp/iperf3_server_wired_to_wired.json
+
