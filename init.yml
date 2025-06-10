@@ -159,7 +159,24 @@
           priority: 3  # 1: Low, 2: Normal, 3: High, 4: Urgent
           status: 2      # 2: Open, 3: Pending, 4: Resolved, 5: Closed
         status_code: 201
+      register: freshdesk_ticket
 
     - name: Include iperf3 testing tasks
       ansible.builtin.include_tasks: iperf3_testing.yml
 
+    - name: Add iperf3 results as a reply to the Freshdesk Ticket
+      ansible.builtin.uri:
+        url: "https://{{ freshdesk_domain }}/api/v2/tickets/{{ freshdesk_ticket.json.id }}/reply"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Basic {{ freshdesk_api_key | b64encode }}"
+        body_format: json
+        body:
+          body: |
+            Pre-Upgrade iperf3 test results:
+            Wired to Wired: from {{ iperf3_tests[0].client_bind }} to {{ iperf3_tests[0].server_bind }}
+            Sent summary: {{ iperf3_wired_to_wired_output.end.sum_sent }}
+            Received summary: {{ iperf3_wired_to_wired_output.end.sum_received }}
+        status_code: 201
+      when: iperf3_wired_to_wired_output is defined
