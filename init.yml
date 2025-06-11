@@ -116,24 +116,6 @@
       ansible.builtin.pause:
         prompt: "Press Enter to continue after confirming the firmware upgrade in the Meraki Dashboard."
 
-    - name: Cancel firmware upgrade for test_network_id
-      cisco.meraki.networks_firmware_upgrades:
-        networkId: "{{ test_network_id }}"
-        products: >-
-          {{
-            dict([
-              (test_product, {
-                'nextUpgrade': {
-                  'time': test_upgrade_time,
-                  'toVersion': {
-                    'id': network_firmware_versions.meraki_response.products[test_product].currentVersion.id
-                  }
-                }
-              })
-            ])
-          }}
-      when: available_upgrades | length > 0
-
     - name: Download Meraki Community RSS feed
       ansible.builtin.get_url:
         url: "https://community.meraki.com/yuzje69629/rss/board?board.id=firmwareupgrades"
@@ -227,3 +209,20 @@
             Received summary: {{ iperf3_wired_to_wired_output.end.sum_received }}
         status_code: 201
       when: iperf3_wired_to_wired_output is defined
+    - name: Cancel firmware upgrade for test_network_id
+      cisco.meraki.networks_firmware_upgrades:
+        networkId: "{{ test_network_id }}"
+        products: >-
+          {{
+            dict([
+              (test_product, {
+                'nextUpgrade': {
+                  'time': test_upgrade_time,
+                  'toVersion': {
+                    'id': network_firmware_versions.meraki_response.products[test_product].currentVersion.id
+                  }
+                }
+              })
+            ])
+          }}
+      when: available_upgrades | length > 0
