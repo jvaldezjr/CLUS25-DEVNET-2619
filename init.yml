@@ -190,6 +190,10 @@
         status_code: 201
       register: freshdesk_ticket
 
+    - name: Pause the playbook and wait for user confirmation
+      ansible.builtin.pause:
+        prompt: "Press Enter to continue after confirming the firmware upgrade ticket has been created."
+
     - name: Include iperf3 testing tasks
       ansible.builtin.include_tasks: iperf3_testing.yml
 
@@ -209,6 +213,11 @@
             Received summary: {{ iperf3_wired_to_wired_output.end.sum_received }}
         status_code: 201
       when: iperf3_wired_to_wired_output is defined
+
+    - name: Pause the playbook and wait for user confirmation
+      ansible.builtin.pause:
+        prompt: "Press Enter to continue after confirming the iperf results were posted to the ticket."
+
     - name: Cancel firmware upgrade for test_network_id
       cisco.meraki.networks_firmware_upgrades:
         networkId: "{{ test_network_id }}"
