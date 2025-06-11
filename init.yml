@@ -1,5 +1,5 @@
 ---
-- name: Organization firmware upgrade
+- name: DEVNET Test Playbook
   hosts: localhost
   gather_facts: false
 
