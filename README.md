@@ -12,7 +12,7 @@ You will need to configure your own env variables, such as:
 *  `export MERAKI_DASHBOARD_API_KEY=yourKey`
 *  `export MERAKI_ORG_ID=orgID`
 
-**NB:** the test_upgrade_time needs to be reoplaced
+**NB:** the test_upgrade_time needs to be replaced
 
 Static variables for the iperf client / server will need to be replaced and interface IPs updated.
 
